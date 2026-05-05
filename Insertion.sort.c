@@ -1,14 +1,14 @@
 #include <stdio.h>
 
 int main() {
-    int array[] = {5, 10, 2, 1, 6, 9, 8, 7, 3, 4};
+    int array[] = {31, 41, 59, 26, 41, 58};
     int n = sizeof(array) / sizeof(array[0]);
 
     for (int i = 1; i < n; i++) {
         int key = array[i];
         int j = i - 1;
-
-        while (j >= 0 && array[j] > key) {
+        // < bestämmer om det är minsta/största värde är till vänster
+        while (j >= 0 && array[j] < key) {
             array[j + 1] = array[j];
             j = j - 1;
         }
