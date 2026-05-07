@@ -11,7 +11,7 @@ struct Node {
     
     struct Node *left;
     struct Node *right;
-    struct Node *parent;
+    
 
 };
 
@@ -71,6 +71,7 @@ Node *search(Node* root, int value) {
     if (value > root->value) {
         return search(root->right, value);
     }
+    return NULL;
 }
 // letar efterminsta noden
 Node* minimum(Node* root) {
@@ -96,9 +97,9 @@ Node* maximum(Node* root) {
     }
     return root;
 }
-
+//tar bort noden
 Node* delete(Node* root, int value) {
-    //För att hitta noden
+    //Första del är för att hitta noden
     if (root == NULL) {
         return NULL;
     }
@@ -124,42 +125,48 @@ Node* delete(Node* root, int value) {
             free(root);
             return temp;
         }
-        
+        //flytar mindräe värdet som är udner och flytter så den hamnar över
+        // root->right
         Node* temp = minimum(root->right);
         root->value = temp->value;
         root->right = delete(root->right, temp->value);
     }
     return root;
 }
-
+// Nästa mindre värde
 Node* predecessor(Node* root, int value) {
-    Node* temp = search(root, value);
-    if (temp == NULL) {
-        return NULL;
-    }
+    Node* current = root;
+    Node* pred = NULL;
 
-    if (temp->left == NULL) {
-        return NULL;
+    while (current != NULL){
+        if (value > current->value){
+            pred = current;
+            current = current->right;
+        }
+        else {
+            current = current->left;
+        }
     }
-    temp = maximum(temp->left);
-
-    return temp;
+    return pred;
 }
-
+// Nästa större värde
 Node* successor(Node* root, int value) {
-    Node* temp = search(root, value);
-    if (temp == NULL) {
-        return NULL;
+    Node* current = root;
+    Node* succ = NULL;
+
+    while (current != NULL) {
+        if (value < current->value) {
+            succ = current;
+            current = current->left;
+        }
+        else {
+            current = current->right;
+        }
     }
 
-    if (temp->right == NULL) {
-        return NULL;
-    }
-    temp = minimum(temp->right);
-
-    return temp;
+    return succ;
 }
-
+//För att skriva ut alla värden på trädet
 void print(Node* root) {
     if (root == NULL) {
         return;
@@ -169,7 +176,7 @@ void print(Node* root) {
     print(root->right);
 
 }
-
+//antal nodar som tillhör trädet
 int size(Node* root) {
     if(root == NULL) {
         return 0;
@@ -178,6 +185,7 @@ int size(Node* root) {
 return 1 + size(root->left) + size(root->right);
 }
 
+//För att se djupet 
 int depth(Node* root) {
     if(root == NULL) {
         return 0;
@@ -191,6 +199,8 @@ int depth(Node* root) {
         return 1 + rightDepth;
     }
 }
+
+//för att skriva ut värde på Node
 void print_node_result(Node* node) {
     if (node != NULL) {
         printf("%d\n", node->value);
@@ -262,6 +272,53 @@ int main() {
 
     puts("Final depth:");
     printf("%d\n", depth(root));
+    puts("\n\n\n");
 
+    puts("Node L1 & L2");
+
+    Node* L1 = NULL;
+    Node* L2 = NULL;
+
+    int arr1[] = {3, 1, 5, 10, 8, 7};
+    for (int i = 0; i < 6; i++) {
+        insert(&L1, arr1[i]);
+    }
+
+    int arr2[] = {5, 2, 9, 6, 1, 2};
+    for (int i = 0; i < 6; i++) {
+        insert(&L2, arr2[i]);
+    }
+
+    printf("L1 minimum: %d\n", minimum(L1)->value);
+    printf("L1 maximum: %d\n", maximum(L1)->value);
+    
+    Node* temp;
+
+    temp = successor(L1, 5);
+    printf("Successor of 5: ");
+    print_node_result(temp);
+
+    temp = predecessor(L1, 5);
+    printf("Predecessor of 5: ");
+    print_node_result(temp);
+
+    temp = predecessor(L1, maximum(L1)->value);
+    printf("Predecessor of maximum: ");
+    print_node_result(temp);
+    
+    printf("L2 minimum: %d\n", minimum(L2)->value);
+    printf("L2 maximum: %d\n", maximum(L2)->value);
+
+    temp = successor(L2, 9);
+    printf("Successor of 9: ");
+    print_node_result(temp);
+
+    temp = predecessor(L2, 9);
+    printf("Predecessor of 9: ");
+    print_node_result(temp);
+
+    temp = successor(L2, minimum(L2)->value);
+    printf("Successor of minimum: ");
+    print_node_result(temp);
     return 0;  
 }
