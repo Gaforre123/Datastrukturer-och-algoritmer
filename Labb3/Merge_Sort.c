@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "load_file/load_file.h"
+#include "load_file.h"
 
 void merge(int arr[], int l, int m, int r) {
     int temp[1000];
@@ -56,7 +56,7 @@ int main() {
      */
      
      
-    int *data = load_file("sorting_problems/test-10-problem");
+    int *data = load_file("sorting_problems/test-10-1-problem");
     int n = data[0];
     merge_sort(data + 1, 0, n - 1);
     for (int i = 1; i <= n; i++) {
@@ -64,3 +64,6 @@ int main() {
     }
    
 }
+
+//Vid ändring av problem krävs det att man ändrar gcc 
+//gcc gcc Merge_Sort.c load_file.c -o Merge_Sort.exe

@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "load_file/load_file.h"
+#include "load_file.h"
 
 void insertion_sort(int arr[], int n) {
     for (int i = 1; i < n; i++) {
@@ -40,7 +40,7 @@ int main() {
         printf("%d, ", pn[i]);
     }
     */
-   int *data = load_file("sorting_problems/test-10-problem");
+   int *data = load_file("sorting_problems/test-10-1-problem");
     int n = data[0];
 
     // Viktigt: data + 1
@@ -56,3 +56,6 @@ int main() {
     free(data);
     return 0;
 }
+
+//Vid ändring av problem krävs det att man ändrar gcc 
+//gcc Insertion_Sort.c load_file.c -o Insertion_Sort.exe
